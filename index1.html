@@ -1,3 +1,132 @@
+
+ <!DOCTYPE html>
 <html>
-  
-</html>
+<head>
+    <title>Падающие буквы</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial;
+            overflow: hidden;
+        }
+
+        .falling-letter {
+            position: fixed;
+            font-size: 24px;
+            color: #add8e6;
+            font-weight: bold;
+            top: -50px;
+            z-index: -1;
+            animation: fall linear infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .falling-letter:hover {
+            transform: scale(1.5);
+            z-index: 1;
+            color: #3498db;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            max-width: 500px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .letter-block {
+            display: inline-block;
+            width: 60px;
+            text-align: center;
+            margin: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .letter-block:hover {
+            transform: scale(1.2);
+            background: #e3f2fd;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
+        }
+
+        .letter {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .pronounce {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Английский алфавит</h2>
+    <div id="alphabet"></div>
+</div>
+
+<script>
+    // Создаем падающие буквы
+    function createFallingLetter() {
+        let letter = document.createElement('div');
+        letter.className = 'falling-letter';
+        letter.textContent = String.fromCharCode(65 + Math.random() * 26);
+        letter.style.left = Math.random() * 100 + 'vw';
+        letter.style.animationDuration = (Math.random() * 5 + 3) + 's';
+        letter.style.fontSize = (Math.random() * 20 + 16) + 'px';
+        letter.style.opacity = Math.random() * 0.5 + 0.3;
+        document.body.appendChild(letter);
+
+        // Удаляем букву после падения
+        setTimeout(() => {
+            letter.remove();
+        }, 10000);
+    }
+
+    // Запускаем создание букв каждые 300ms
+    setInterval(createFallingLetter, 300);
+
+    // Алфавит с произношением
+    const alphabet = [
+        'A [эй]', 'B [би]', 'C [си]', 'D [ди]', 'E [и]', 'F [эф]',
+        'G [джи]', 'H [эйч]', 'I [ай]', 'J [джей]', 'K [кей]', 'L [эл]',
+        'M [эм]', 'N [эн]', 'O [оу]', 'P [пи]', 'Q [кью]', 'R [ар]',
+        'S [эс]', 'T [ти]', 'U [ю]', 'V [ви]', 'W [дабл-ю]', 'X [экс]',
+        'Y [уай]', 'Z [зед]'
+    ];
+
+    // Добавляем алфавит
+    const container = document.getElementById('alphabet');
+    alphabet.forEach(item => {
+        let parts = item.split(' ');
+        let block = document.createElement('div');
+        block.className = 'letter-block';
+        block.innerHTML = `<div class="letter">${parts[0]}</div>
+                          <div class="pronounce">${parts[1]} ${parts[2] || ''}</div>`;
+        container.appendChild(block);
+    });
+</script>
+
+</body>
+</html> 
